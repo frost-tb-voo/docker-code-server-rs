@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TAG=`date +%Y%m%d`
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+docker tag novsyama/code-server-rs novsyama/code-server-rs:${TAG}
+docker push novsyama/code-server-rs:${TAG}
+docker push novsyama/code-server-rs
+

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+IMAGE=codercom/code-server:latest
+DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+cd ${DIR}/..
+# docker pull gcr.io/distroless/nodejs-debian10
+docker pull node:16-buster
+docker pull rust:1-buster
+docker pull ${IMAGE}
+# https://static.rust-lang.org/rustup/archive/{rustup_version}/{arch}/rustup-init.sha256
+# https://static.rust-lang.org/rustup/archive/1.24.1/x86_64-unknown-linux-gnu/rustup-init.sha256
+docker build -t novsyama/code-server-rs \
+ --build-arg VCS_REF=`git rev-parse --short HEAD` \
+ --build-arg VSCODE_RUST_VERSION="0.7.8" \
+ --build-arg RUST_ANALYZER_VERSION="2021-06-14" \
+ --build-arg RUST_VERSION="1.52.1" \
+ --build-arg RUSTUP_VERSION="1.24.1" \
+ --build-arg rustArch="x86_64-unknown-linux-gnu" \
+ --build-arg rustupSha256="fb3a7425e3f10d51f0480ac3cdb3e725977955b2ba21c9bdac35309563b115e8" \
+ .
+docker tag novsyama/code-server-rs novsyama/code-server-rs:local
+docker images novsyama/code-server-rs

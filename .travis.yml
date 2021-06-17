@@ -1,0 +1,18 @@
+sudo: required
+
+language: node_js
+
+services:
+  - docker
+
+script:
+- bash ./hooks/build
+
+deploy:
+  provider: script
+  script: bash push
+  on:
+    branch: main
+
+notifications:
+  email: false
