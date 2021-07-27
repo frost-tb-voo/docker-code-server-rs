@@ -1,25 +1,21 @@
 # docker-code-server-rs
-[![](https://img.shields.io/travis/frost-tb-voo/docker-code-server-rs/master.svg?style=flat-square)](https://travis-ci.org/frost-tb-voo/docker-code-server-rs/)
+[![](https://img.shields.io/github/workflow/status/frost-tb-voo/docker-code-server-rs/Docker?style=flat-square)](https://github.com/frost-tb-voo/docker-code-server-rs/actions/workflows/docker-publish.yml)
 [![GitHub stars](https://img.shields.io/github/stars/frost-tb-voo/docker-code-server-rs.svg?style=flat-square)](https://github.com/frost-tb-voo/docker-code-server-rs/stargazers)
 [![GitHub license](https://img.shields.io/github/license/frost-tb-voo/docker-code-server-rs.svg?style=flat-square)](https://github.com/frost-tb-voo/docker-code-server-rs/blob/master/LICENSE)
-[![Docker pulls](https://img.shields.io/docker/pulls/novsyama/code-server-rs.svg?style=flat-square)](https://hub.docker.com/r/novsyama/code-server-rs)
-[![Docker image-size](https://img.shields.io/docker/image-size/novsyama/code-server-rs.svg?style=flat-square)](https://hub.docker.com/r/novsyama/code-server-rs)
-[![Docker layers](https://img.shields.io/microbadger/layers/novsyama/code-server-rs.svg?style=flat-square)](https://microbadger.com/images/novsyama/code-server-rs)
 
 An unofficial extended VSCode [code-server](https://github.com/cdr/code-server) image for latest rust with [vscode-rust](https://github.com/rust-lang/vscode-rust) and [rust-analyzer](https://github.com/rust-analyzer).
-See [novsyama/code-server-rs](https://hub.docker.com/r/novsyama/code-server-rs/)
 
 ## How
 
 ```bash
 PROJECT_DIR=<workspace absolute path>
 
-sudo docker pull novsyama/code-server-rs
+sudo docker pull ghcr.io/frost-tb-voo/code-server-rs
 sudo docker run --name=vscode --net=host -d \
  -v "${PROJECT_DIR}:/home/coder/project" \
  -w /home/coder/project \
  --security-opt "seccomp:unconfined" \
- novsyama/code-server-rs \
+ ghcr.io/frost-tb-voo/code-server-rs \
  code-server \
  --auth none
 ```
