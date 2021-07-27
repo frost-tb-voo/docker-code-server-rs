@@ -3,6 +3,8 @@ ARG RUST_ANALYZER_VERSION="2021-06-14"
 ARG RUST_VERSION="1.52.1"
 ARG RUSTUP_VERSION="1.24.1"
 ARG rustArch="x86_64-unknown-linux-gnu"
+# https://static.rust-lang.org/rustup/archive/{rustup_version}/{arch}/rustup-init.sha256
+# https://static.rust-lang.org/rustup/archive/1.24.1/x86_64-unknown-linux-gnu/rustup-init.sha256
 ARG rustupSha256="fb3a7425e3f10d51f0480ac3cdb3e725977955b2ba21c9bdac35309563b115e8"
 
 FROM node:16-buster as extension
