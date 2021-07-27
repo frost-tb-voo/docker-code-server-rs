@@ -1,4 +1,10 @@
-# FROM gcr.io/distroless/nodejs-debian10 as extension
+ARG VSCODE_RUST_VERSION="0.7.8"
+ARG RUST_ANALYZER_VERSION="2021-06-14"
+ARG RUST_VERSION="1.52.1"
+ARG RUSTUP_VERSION="1.24.1"
+ARG rustArch="x86_64-unknown-linux-gnu"
+ARG rustupSha256="fb3a7425e3f10d51f0480ac3cdb3e725977955b2ba21c9bdac35309563b115e8"
+
 FROM node:16-buster as extension
 ARG VSCODE_RUST_VERSION
 ARG RUST_ANALYZER_VERSION
@@ -106,6 +112,3 @@ RUN git clone https://github.com/rust-analyzer/rust-analyzer.git \
  && cargo -q xtask install --server \
  && cd .. \
  && rm -rf ./rust-analyzer
-# RUN mkdir -p ~/.local/bin \
-#  && curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/2021-06-14/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer \
-#  && chmod +x ~/.local/bin/rust-analyzer
