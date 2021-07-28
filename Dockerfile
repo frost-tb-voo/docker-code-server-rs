@@ -1,5 +1,4 @@
 ARG VSCODE_RUST_VERSION="0.7.8"
-ARG RUST_ANALYZER_VERSION="2021-06-14"
 ARG RUST_VERSION="1.52.1"
 ARG RUSTUP_VERSION="1.24.1"
 ARG rustArch="x86_64-unknown-linux-gnu"
@@ -9,7 +8,6 @@ ARG rustupSha256="fb3a7425e3f10d51f0480ac3cdb3e725977955b2ba21c9bdac35309563b115
 
 FROM node:16-buster as extension
 ARG VSCODE_RUST_VERSION
-ARG RUST_ANALYZER_VERSION
 
 WORKDIR /rust
 RUN git clone https://github.com/rust-lang/vscode-rust.git \
@@ -28,26 +26,9 @@ RUN git clone https://github.com/rust-lang/vscode-rust.git \
  && cd ../ \
  && rm -rf /rust/vscode-rust
 
-RUN git clone https://github.com/rust-analyzer/rust-analyzer.git \
- && cd ./rust-analyzer/editors/code \
- && git checkout "${RUST_ANALYZER_VERSION}" \
- && npm install --silent \
- && npm audit fix --force \
- && npm cache clean --force \
- && rm -rf node_modules package-lock.json \
- && npm install --silent \
- && npm install -g vsce --silent \
- && vsce package \
- && npm cache clean --force \
- && rm -rf ~/.npm \
- && mv *.vsix ../../../ \
- && cd ../../../ \
- && rm -rf /rust/rust-analyzer
-
 FROM codercom/code-server:latest
 ARG VCS_REF
 ARG VSCODE_RUST_VERSION
-ARG RUST_ANALYZER_VERSION
 ARG RUST_VERSION
 ARG RUSTUP_VERSION
 ARG rustArch
@@ -92,7 +73,6 @@ ADD settings.json /home/coder/.local/share/code-server/User/settings.json
 ADD settings.json /home/coder/.local/share/code-server/Machine
 ADD settings.json /home/coder/project/.vscode/settings.json
 COPY --from=extension /rust/rust-${VSCODE_RUST_VERSION}.vsix /home/coder/
-COPY --from=extension /rust/rust-analyzer-0.4.0-dev.vsix /home/coder/
 RUN chown -hR coder /home/coder
 
 USER coder
@@ -101,16 +81,10 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     PATH=$RUSTUP_HOME/bin:$CARGO_HOME/bin:~/.local/bin:$PATH
 
 WORKDIR /home/coder/project
-RUN code-server --install-extension /home/coder/rust-${VSCODE_RUST_VERSION}.vsix \
- && code-server --install-extension /home/coder/rust-analyzer-0.4.0-dev.vsix
+RUN code-server --install-extension /home/coder/rust-${VSCODE_RUST_VERSION}.vsix
 
 RUN rustup -q component add rust-analysis --toolchain 1.52.1-x86_64-unknown-linux-gnu \
  && rustup -q component add rust-src --toolchain 1.52.1-x86_64-unknown-linux-gnu \
  && rustup -q component add rls --toolchain 1.52.1-x86_64-unknown-linux-gnu \
  && cargo -q install cargo-edit
-RUN git clone https://github.com/rust-analyzer/rust-analyzer.git \
- && cd ./rust-analyzer \
- && git checkout "${RUST_ANALYZER_VERSION}" \
- && cargo -q xtask install --server \
- && cd .. \
- && rm -rf ./rust-analyzer
+

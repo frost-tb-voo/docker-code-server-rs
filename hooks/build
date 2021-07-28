@@ -10,7 +10,6 @@ docker pull ${IMAGE}
 docker build -t ${NEW_IMAGE} \
  --build-arg VCS_REF=`git rev-parse --short HEAD` \
  --build-arg VSCODE_RUST_VERSION="0.7.8" \
- --build-arg RUST_ANALYZER_VERSION="2021-06-14" \
  --build-arg RUST_VERSION="1.52.1" \
  --build-arg RUSTUP_VERSION="1.24.1" \
  --build-arg rustArch="x86_64-unknown-linux-gnu" \
