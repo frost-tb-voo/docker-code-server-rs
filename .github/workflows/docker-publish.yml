@@ -7,7 +7,7 @@ name: Docker
 
 on:
   push:
-    branches: [ dev, master ]
+    branches: [ main ]
     paths-ignore:
       - LICENSE
       - README.md
@@ -21,7 +21,7 @@ on:
       - hello
       - hooks
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
     paths-ignore:
       - LICENSE
       - README.md
